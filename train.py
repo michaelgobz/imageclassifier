@@ -84,7 +84,8 @@ def main():
 
     print("______________________________________________________________\n")
     print(
-        f"The model training took {str(int((tot_time / 3600)))} : {str(int((tot_time % 3600) / 60))} :\
+        f"The model training took {str(int((tot_time / 3600)))} :\
+          {str(int((tot_time % 3600) / 60))} :\
           {str(int((tot_time % 3600) % 60))}"
     )
 
