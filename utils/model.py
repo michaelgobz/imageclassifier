@@ -189,7 +189,7 @@ def train(
                 valid_accuracy = 0
                 model.train()
     
-    return model
+    return model, optimizer
 
 
 # predict using the model
