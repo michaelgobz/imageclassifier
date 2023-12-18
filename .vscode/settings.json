@@ -1,7 +1,12 @@
 {
     "cSpell.words": [
+        "archs",
         "commandline",
+        "IMAGENET",
+        "ndarray",
         "optim",
-        "trainloader"
+        "Softmax",
+        "trainloader",
+        "udacity"
     ]
 }

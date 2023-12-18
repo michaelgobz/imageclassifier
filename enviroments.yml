@@ -1,17 +1,11 @@
-name: udacity-ai-python
+name: udacity ai with python project
 channels:
   - defaults
   - conda-forge
 dependencies:
   - python=3.8
   - numpy
-  - pandas
-  - scikit-learn
   - matplotlib
-  - seaborn
   - pytorch
   - torchvision
-  - torchaudio
-  - cudatoolkit=10.2
   - jupyter
-  - matplotlib
