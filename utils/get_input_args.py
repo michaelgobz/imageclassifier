@@ -7,6 +7,7 @@
 
 import argparse
 
+
 def get_train_input_args():
     """_summary_
 
@@ -94,6 +95,8 @@ def get_predict_input_args():
     parser.add_argument(
         "--gpu", type=str, default="", help="Tell the model to run on he GPU"
     )
+
+    parser.add_argument("--arch", type=str, default="resent", help="model architecture")
 
     args = parser.parse_args()
 
