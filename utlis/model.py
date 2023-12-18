@@ -7,7 +7,7 @@ from torch import optim, nn
 from torchvision import models
 
 
-def get_pretrained_model(pretrained:bool=True, arch:str):
+def get_pretrained_model(arch: str, pretrained:bool=True):
     """_summary_
 
     Args:
@@ -67,7 +67,3 @@ def create_the_classifier(model, arch):
                                  )
     
     return model
-
-
-
-        
