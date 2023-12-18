@@ -2,7 +2,7 @@
 
 """_summary_
 """
-
+import torch
 from torch import optim, nn
 from torchvision import models
 
@@ -67,3 +67,125 @@ def create_the_classifier(model, arch):
                                  )
     
     return model
+
+def define_loss_criterion():
+    """_summary_
+
+    Returns:
+        _type_: _description_
+    """
+    
+    criterion = nn.NLLLoss()
+    return criterion
+    
+
+def define_optimizer(model, arch, learning_rate):
+    
+    """_summary_
+
+    Returns:
+        _type_: _description_
+    """
+    
+    if arch == 'resnet':
+        optimizer = optim.Adam(model.fc.parameters(), lr=learning_rate)
+    elif arch == 'vgg':
+        optimizer = optim.Adam(model.classifier.parameters(), lr=learning_rate)
+    
+    return optimizer
+
+
+def get_device(args=None):
+    """_summary_
+
+    Args:
+        args (_type_, optional): _description_. Defaults to None.
+
+    Returns:
+        _type_: _description_
+    """
+    
+    device = None
+    if args is None:
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    else:
+        device = 'cuda'
+        
+    return device
+
+
+
+def train(
+    model,
+    epochs, 
+    trainloader, 
+    validloader,
+    criterion, 
+    optimizer, 
+    device, 
+    steps_for_eval=0, 
+    print_every=10):
+
+    # losses
+    running_loss = 0
+    valid_loss = 0
+
+    # Accuracies
+    valid_accuracy = 0
+    accuracies = []
+
+    #losses
+    validationlosses = []
+    traininglosses = []
+    
+    # move the model to device
+    model.to(device)
+    
+    # run the training loop
+    for epoch in range(epochs):
+        print(f'Training Epoch {epoch} ...')
+        for inputs, labels in trainloader:
+            steps_for_eval += 1
+            # Move input and label tensors to the default device
+            inputs, labels = inputs.to(device), labels.to(device)
+
+            optimizer.zero_grad()
+
+            logps = model.forward(inputs)
+            loss = criterion(logps, labels)
+            loss.backward()
+            optimizer.step()
+
+            running_loss += loss.item()
+
+            if steps_for_eval % print_every == 0:
+                model.eval()
+                with torch.no_grad():
+                    for inputs, labels in validloader:
+                        inputs, labels = inputs.to(device), labels.to(device)
+                        logps = model.forward(inputs)
+                        batch_loss = criterion(logps, labels)
+
+                        valid_loss += batch_loss.item()
+
+                        # Calculate accuracy
+                        ps = torch.exp(logps)
+                        top_p, top_class = ps.topk(1, dim=1)
+                        equals = top_class == labels.view(*top_class.shape)
+                        valid_accuracy += torch.mean(equals.type(torch.FloatTensor)).item()
+
+                traininglosses.append(running_loss/print_every)
+                validationlosses.append(valid_loss/print_every)
+                accuracies.append((valid_accuracy/len(validloader))*100)
+                
+                print(f"Epoch {epoch+1}/{epochs}.. "
+                    f"Train loss: {running_loss/print_every:.3f}.. "
+                    f"Validation loss: {valid_loss/print_every:.3f}.. "
+                    f"Validation accuracy: {valid_accuracy/len(validloader):.3f}")
+                running_loss = 0
+                valid_loss = 0
+                valid_accuracy = 0
+                model.train()
+    
+    return model
+    

@@ -3,10 +3,15 @@
         "archs",
         "commandline",
         "IMAGENET",
+        "logps",
         "ndarray",
         "optim",
         "Softmax",
+        "testinglosses",
+        "topk",
+        "traininglosses",
         "trainloader",
-        "udacity"
+        "udacity",
+        "validationlosses"
     ]
 }
