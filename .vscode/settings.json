@@ -12,6 +12,7 @@
         "traininglosses",
         "trainloader",
         "udacity",
+        "unsqueeze",
         "validationlosses"
     ]
 }

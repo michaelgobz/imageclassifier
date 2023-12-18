@@ -6,6 +6,8 @@ import torch
 from torch import optim, nn
 from torchvision import models
 
+from utlis.preprocess_image import process_image
+from utils.load_categories_dict import load_categories
 
 def get_pretrained_model(arch: str, pretrained:bool=True):
     """_summary_
@@ -188,4 +190,34 @@ def train(
                 model.train()
     
     return model
+
+
+# predict using the model
+
+def predict(image_path, model, device, cat_path, topk=5):
+    """ Predict the class (or classes) of an image using a trained deep learning model.
+    """
+    # TODO: Implement the code to predict the class from an image file
+    model.eval()
+    model.to(device)
+    image = process_image(image_path)
+    image = image.unsqueeze(0)
+    print(image.shape)
+    image = image.to(device)
+    
+    # categories
+    cat_to_name:dict = load_categories(cat_path)
+    
+    with torch.no_grad():
+        logps = model.forward(image)
+        ps = logps
+        top_p, top_class = ps.topk(topk, dim=1)
+        top_p = top_p.cpu().numpy()[0]
+        top_class = top_class.cpu().numpy()[0]
+        idx_to_class = {val: key for key, val in model.class_to_idx.items()}
+        top_class = [idx_to_class[lab] for lab in top_class]
+        top_flowers = [cat_to_name[lab] for lab in top_class]
+        
+    return top_p, top_class, top_flowers
+    
     
