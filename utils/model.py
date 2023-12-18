@@ -6,7 +6,7 @@ import torch
 from torch import optim, nn
 from torchvision import models
 
-from utlis.preprocess_image import process_image
+from utils.preprocess_image import process_image
 from utils.load_categories_dict import load_categories
 
 def get_pretrained_model(arch: str, pretrained:bool=True):
