@@ -9,29 +9,32 @@ it runs on the gpu by default but also cpu but not advised to do so
 
 
 """
+import os
 import datetime
 from time import time
 
-from utils.get_input_args import get_train_input_args
-from utils.transforms import get_transforms
-from utils.loaddata import get_data
-from utils.load_and_save_checkpoint import save_checkpoint
-from utils.model import (
+from utils import (
     get_device,
     get_pretrained_model,
     define_optimizer,
     define_loss_criterion,
     train,
     create_the_classifier,
+    save_checkpoint,
+    get_transforms,
+    get_data,
+    get_train_input_args,
+    load_checkpoint,
 )
 
 
-def main():
+def main(*args):
     """_summary_"""
 
     start_time = time()
     # get the arguments
     args = get_train_input_args()
+    print(args)
 
     # define the device
     device = get_device(args="gpu")
@@ -57,6 +60,17 @@ def main():
 
     optimizer = define_optimizer(model, args.arch, args.learning_rate)
 
+    # check if checkpoint directory had checkpoints
+    if args.checkpoint:
+        # if the directory contains .pth files
+        if os.path.exists(args.save_dir + "*.pth"):
+            # load the checkpoint
+            model = load_checkpoint(args.checkpoint, model, args.arch)
+    else:
+        print("No checkpoint directory provided\n")
+        print("provide the checkpoint directory to load or save the checkpoint")
+        exit(1)
+    
     # train the model
 
     trained_model, optimizer = train(
@@ -67,7 +81,7 @@ def main():
     print(f"creating a checkpoint at {datetime.datetime.now()}")
 
     save_checkpoint(
-        "/checkpoints",
+        args.save_dir,
         trained_model,
         optimizer,
         args.learning_rate,

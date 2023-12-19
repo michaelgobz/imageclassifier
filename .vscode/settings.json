@@ -22,6 +22,7 @@
         "spicata",
         "testinglosses",
         "topk",
+        "torchvision",
         "traininglosses",
         "trainloader",
         "udacity",

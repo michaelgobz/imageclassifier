@@ -15,7 +15,7 @@ def get_train_input_args():
         _type_: _description_
     """
 
-    parser = argparse.ArgumentParser
+    parser = argparse.ArgumentParser()
 
     # add the expected arguments
 
@@ -43,6 +43,7 @@ def get_train_input_args():
         default="/checkpoints",
         help="The directory to save the model to checkpoints",
     )
+
     parser.add_argument(
         "--learning_rate",
         type=float,

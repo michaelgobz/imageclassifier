@@ -22,13 +22,13 @@ def get_pretrained_model(arch: str, pretrained: bool = True):
     """
     pretrained_model = None
     if arch == "resent" and pretrained:
-        pretrained_model = models.resnet50(pretrained)
+        pretrained_model = models.resnet50(pretrained=pretrained)
 
     elif pretrained == 0 and arch == "resent":
         pretrained_model = models.resnet50(weights="IMAGENET_1k")
 
     elif pretrained and arch == "vgg":
-        pretrained_model = models.vgg16(pretrained)
+        pretrained_model = models.vgg16(pretrained=pretrained)
 
     elif pretrained == 0 and arch == "vgg":
         pretrained_model = models.vgg16(weights="IMAGENET_1k")
@@ -234,7 +234,7 @@ def predict(image_path, model, device, cat_path, topk=5):
 
     with torch.no_grad():
         logps = model.forward(image)
-        ps = logps
+        ps = torch.exp(logps)
         top_p, top_class = ps.topk(topk, dim=1)
         top_p = top_p.cpu().numpy()[0]
         top_class = top_class.cpu().numpy()[0]

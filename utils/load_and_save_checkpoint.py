@@ -27,7 +27,8 @@ def load_checkpoint(filepath, model_pretrained, arch):
         model_pretrained.fc = checkpoint["classifier"]
         optimizer.load_state_dict(checkpoint["optimizer_state"])
         model_pretrained.load_state_dict(checkpoint["state_dict"])
-        model = model_pretrained.fc
+        model_pretrained.class_to_idx = checkpoint["class_to_idx"]
+        model = model_pretrained
     elif arch == "vgg":
         optimizer = optim.Adam(
             model_pretrained.classifier.parameters(), lr=checkpoint["learning_rate"]
@@ -35,6 +36,7 @@ def load_checkpoint(filepath, model_pretrained, arch):
         model_pretrained.classifier = checkpoint["classifier"]
         optimizer.load_state_dict(checkpoint["optimizer_state"])
         model_pretrained.load_state_dict(checkpoint["state_dict"])
+        model_pretrained.class_to_idx = checkpoint["class_to_idx"]
         model = model_pretrained
 
     return model

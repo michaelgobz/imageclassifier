@@ -4,11 +4,14 @@
 
 """
 
-from utils.load_and_save_checkpoint import load_checkpoint
-from utils.get_input_args import get_predict_input_args
-from utils.preprocess_image import process_image
-from utils.load_categories_dict import load_categories
-from utils.model import predict, get_pretrained_model
+from utils import (
+    get_predict_input_args,
+    load_checkpoint,
+    load_categories,
+    get_pretrained_model,
+    process_image,
+    predict,
+)
 
 
 def main():
@@ -33,11 +36,14 @@ def main():
 
     # predict the the image category
 
-    probs, classes = predict(image, model, args.top_k, cat_to_name, args.gpu)
+    probs, classes, flowers = predict(image, model, args.top_k, cat_to_name, args.gpu)
 
     # print the class of the image with the highest probability.
 
-    print(f"The image is predicted to be {classes[0]} with a probability of {probs[0]}")
+    print(
+        f"The image is predicted to be {flowers[0]} of id"
+        f"{classes[0]} with a probability of {probs[0]}"
+    )
 
 
 if __name__ == "__main__":
