@@ -91,7 +91,6 @@ def get_predict_input_args():
     parser.add_argument(
         "image_path",
         type=str,
-        default="./images/image.jpg",
         help="Path to the image to be used for inference",
     )
     parser.add_argument(
@@ -123,7 +122,7 @@ def get_predict_input_args():
 
     parser.add_argument("--arch",
                         type=str,
-                        default="resent",
+                        default="resent50",
                         help="model architecture")
 
     args = parser.parse_args()

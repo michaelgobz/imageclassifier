@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 
-"""_summary_
+"""file contains all the functions to train the model
+ author: Michael Goboola
+    date: 2023-19-12
+    time: 20:00
+
 """
 import torch
 from torch import optim, nn
@@ -11,44 +15,45 @@ from utils.load_categories_dict import load_categories
 
 
 def get_pretrained_model(arch: str, pretrained: bool = True):
-    """_summary_
+    """function to get the pretrained model based on the provided architecture
 
     Args:
-        arch (str): _description_
-        pretrained (bool, optional): _description_. Defaults to True.
+        arch (str) model architecture  which is required to build the model
+        pretrained (bool, optional): tells torch to get the pretrained version. Defaults to True.
 
     Returns:
-        _type_: _description_
+        _torch.Module_: a pretrained model
     """
     pretrained_model = None
-    if arch == "resent" and pretrained:
+    if arch == "resent50" and pretrained:
         pretrained_model = models.resnet50(pretrained=pretrained)
 
-    elif pretrained == 0 and arch == "resent":
+    elif pretrained == 0 and arch == "resent50":
         pretrained_model = models.resnet50(weights="IMAGENET_1k")
 
-    elif pretrained and arch == "vgg":
+    elif pretrained and arch == "vgg16":
         pretrained_model = models.vgg16(pretrained=pretrained)
 
-    elif pretrained == 0 and arch == "vgg":
+    elif pretrained == 0 and arch == "vgg16":
         pretrained_model = models.vgg16(weights="IMAGENET_1k")
 
     else:
         print(
-            "model arch and pretrained bool need to be provided, supported archs vgg and resnet)\
+            "model arch and pretrained bool need to be provided, supported architectures are vgg16 and resnet50)\
             and pretrained either true or false"
         )
-        print(f"re-run the training with the correct parameter --arch to vgg or resent yours is {arch}")
+        print(f"re-run the training with the correct parameter --arch to vgg16 or resent50 yours is {arch}")
         exit(1)
 
     return pretrained_model
 
 
 def create_the_classifier(model, arch):
-    """_summary_
-
+    """ This creates the classifier on top of the pretrained model so thats we use transfer learning
+    to train the model on our data  with is a multi-class classification
     Returns:
-        _type_: _description_
+        _torch.Module_: the model with the classifier bit changed to have out features of 102 and inputs depending on
+        the model architecture
     """
 
     if arch == "resent":
@@ -77,10 +82,10 @@ def create_the_classifier(model, arch):
 
 
 def define_loss_criterion():
-    """_summary_
+    """ creates the loss criterion
 
     Returns:
-        _type_: _description_
+        _NLLLoss_: the loss criterion for a multi-class classification
     """
 
     criterion = nn.NLLLoss()
@@ -88,12 +93,12 @@ def define_loss_criterion():
 
 
 def define_optimizer(model, arch, learning_rate):
-    """_summary_
+    """create the optimizer for the model based on the architecture
 
     Returns:
-        _type_: _description_
+        optimizer : the optimizer for the model based on the architecture
     """
-
+    optimizer = None
     if arch == "resnet":
         optimizer = optim.Adam(model.fc.parameters(), lr=learning_rate)
     elif arch == "vgg":
@@ -103,13 +108,13 @@ def define_optimizer(model, arch, learning_rate):
 
 
 def get_device(args=None):
-    """_summary_
+    """get the device to run the model on
 
     Args:
-        args (_type_, optional): _description_. Defaults to None.
+        args (_str_, optional): architecture of the model. Defaults to None.
 
     Returns:
-        _type_: _description_
+        _str_: device string representing the device to run the model on
     """
 
     device = None
@@ -122,31 +127,32 @@ def get_device(args=None):
 
 
 def train(
-    model,
-    epochs,
-    trainloader,
-    validloader,
-    criterion,
-    optimizer,
-    device,
-    steps_for_eval=0,
-    print_every=10,
+        model,
+        epochs,
+        trainloader,
+        validloader,
+        criterion,
+        optimizer,
+        device,
+        steps_for_eval=0,
+        print_every=10,
 ):
-    """_summary_
+    """ The function to train the model that trains the model over the optimisation loop and prints the training
+    and validation loss and accuracy.
 
     Args:
-        model (_type_): _description_
-        epochs (_type_): _description_
-        trainloader (_type_): _description_
-        validloader (_type_): _description_
-        criterion (_type_): _description_
-        optimizer (_type_): _description_
-        device (_type_): _description_
-        steps_for_eval (int, optional): _description_. Defaults to 0.
-        print_every (int, optional): _description_. Defaults to 10.
+        model (_torch.MODULE_): the model to train
+        epochs (_int_): number of epochs to train the model
+        trainloader (_dataloader_): loader for the training data
+        validloader (_dataloader_): loader for the validation data
+        criterion (_NLLLoss_): criterion to use for the loss
+        optimizer (_optimizer_): optimizer to use for the model
+        device (_str_): _description_
+        steps_for_eval (int, optional): step to evaluate the model during training. Defaults to 0.
+        print_every (int, optional): print the evaluation metrics per these steps. Defaults to 10.
 
     Returns:
-        _type_: _description_
+        model, optimizer: returns the trained model and the optimizer
     """
     # losses
     running_loss = 0
@@ -203,10 +209,10 @@ def train(
                 accuracies.append((valid_accuracy / len(validloader)) * 100)
 
                 print(
-                    f"Epoch {epoch+1}/{epochs}.. "
-                    f"Train loss: {running_loss/print_every:.3f}.. "
-                    f"Validation loss: {valid_loss/print_every:.3f}.. "
-                    f"Validation accuracy: {valid_accuracy/len(validloader):.3f}"
+                    f"Epoch {epoch + 1}/{epochs}.. "
+                    f"Train loss: {running_loss / print_every:.3f}.. "
+                    f"Validation loss: {valid_loss / print_every:.3f}.. "
+                    f"Validation accuracy: {valid_accuracy / len(validloader):.3f}"
                 )
                 running_loss = 0
                 valid_loss = 0
@@ -219,9 +225,19 @@ def train(
 # predict using the model
 
 
-def predict(image_path, model, device, cat_path, topk=5):
-    """Predict the class (or classes) of an image using a trained deep learning model."""
-    # TODO: Implement the code to predict the class from an image file
+def predict(image_path, model, device, cat_path, top_k=5):
+    """
+    Predict the class (or classes) of an image using a trained deep learning model.
+    Args:
+        image_path: path to the image to be predicted
+        model:  the trained model to use for prediction
+        device: the device to run the model on
+        cat_path: the path to the categories json file
+        top_k: the top k classes predicted for the image
+
+    Returns: top_p, top_class, top_flowers the probabilities, classes and flowers predicted for the image
+
+    """
     model.eval()
     model.to(device)
     image = process_image(image_path)
@@ -235,7 +251,7 @@ def predict(image_path, model, device, cat_path, topk=5):
     with torch.no_grad():
         logps = model.forward(image)
         ps = torch.exp(logps)
-        top_p, top_class = ps.topk(topk, dim=1)
+        top_p, top_class = ps.topk(top_k, dim=1)
         top_p = top_p.cpu().numpy()[0]
         top_class = top_class.cpu().numpy()[0]
         idx_to_class = {val: key for key, val in model.class_to_idx.items()}
