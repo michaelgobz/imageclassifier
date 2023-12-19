@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""This file contains the the work flow of the training the models
+"""This file contains the  work flow of the training the models
 the acceptable model architectures are 
   - resnet
   - vgg
@@ -11,6 +11,7 @@ it runs on the gpu by default but also cpu but not advised to do so
 """
 import os
 import datetime
+import sys
 from time import time
 
 from utils import (
@@ -28,13 +29,20 @@ from utils import (
 )
 
 
-def main(*args):
-    """_summary_"""
+def main():
+    """
+    This is the main function that runs the training of the model
+
+    Returns: None
+
+    """
+    print(sys.argv[0])
 
     start_time = time()
     # get the arguments
-    args = get_train_input_args()
-    print(args)
+    optional_args = get_train_input_args()
+
+    print(optional_args)
 
     # define the device
     device = get_device(args="gpu")
@@ -43,14 +51,14 @@ def main(*args):
     train_tf, test_tf = get_transforms()
 
     # load the data
-    trainloader, validloader = get_data("/flowers", train_tf, test_tf)
+    trainloader, validloader = get_data(sys.argv[1], train_tf, test_tf)
 
     # get the pre-defined model
 
-    pre_trained_model = get_pretrained_model(args.arch, pretrained=True)
+    pre_trained_model = get_pretrained_model(optional_args.arch, pretrained=True)
 
     # define the classifier
-    model = create_the_classifier(pre_trained_model, args.arch)
+    model = create_the_classifier(pre_trained_model, optional_args.arch)
 
     # define the loss function (criterion)
 
@@ -58,36 +66,36 @@ def main(*args):
 
     # define the optimizer
 
-    optimizer = define_optimizer(model, args.arch, args.learning_rate)
+    optimizer = define_optimizer(model, optional_args.arch, optional_args.learning_rate)
 
     # check if checkpoint directory had checkpoints
-    if args.checkpoint:
+    if optional_args.checkpoint:
         # if the directory contains .pth files
-        if os.path.exists(args.save_dir + "*.pth"):
+        if os.path.exists(optional_args.save_dir + "*.pth"):
             # load the checkpoint
-            model = load_checkpoint(args.checkpoint, model, args.arch)
+            model = load_checkpoint(optional_args.checkpoint, model, optional_args.arch)
     else:
         print("No checkpoint directory provided\n")
         print("provide the checkpoint directory to load or save the checkpoint")
         exit(1)
-    
+
     # train the model
 
     trained_model, optimizer = train(
-        model, args.epochs, trainloader, validloader, criterion, optimizer, device
+        model, optional_args.epochs, trainloader, validloader, criterion, optimizer, device
     )
 
     # save the model check point
     print(f"creating a checkpoint at {datetime.datetime.now()}")
 
     save_checkpoint(
-        args.save_dir,
+        optional_args.save_dir,
         trained_model,
         optimizer,
-        args.learning_rate,
-        args.epochs,
+        optional_args.learning_rate,
+        optional_args.epochs,
         trainloader,
-        args.arch,
+        optional_args.arch,
     )
 
     print("Checkpointing complete")

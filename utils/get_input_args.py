@@ -9,10 +9,18 @@ import argparse
 
 
 def get_train_input_args():
-    """_summary_
+    """ get_train_input_args() function obtains the following command line arguments:
+    thats used to train the model and save the model to a checkpoint and these are:
+    1. data_dir - the directory of the training data
+    2. arch - the model architecture
+    3. learning_rate - the learning rate of the model
+    4. save_dir - the directory to save the model to
+    5. epochs - the number of times to train the model
+    6. gpu - the option to use the GPU
+
 
     Returns:
-        _type_: _description_
+        Namespace:  the parsed argument collection
     """
 
     parser = argparse.ArgumentParser()
@@ -21,7 +29,7 @@ def get_train_input_args():
 
     parser.add_argument(
         "--dir",
-        type == str,
+        type=str,
         default="/flowers",
         help="directory containing the training data",
     )
@@ -60,10 +68,19 @@ def get_train_input_args():
 
 
 def get_predict_input_args():
-    """_summary_
+    """get_predict_input_args() function obtains the following command line arguments
+    thats used to predict the class of an image and these are:
+
+    1. path - the path to the image to be used for inference
+    2. checkpoint - the path to the checkpoint to use for inference
+    3. category_names - the category names of flowers
+    4. top_k - get the top k predicted classes / categories
+    5. gpu - the option to use the GPU
+    6. arch - the model architecture
+
 
     Returns:
-        _type_: _description_
+       Namespace : the parsed argument collection
     """
     parser = argparse.ArgumentParser()
     parser.add_argument(
