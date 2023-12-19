@@ -68,7 +68,7 @@ def main():
     # check if checkpoint directory had checkpoints
     if optional_args.save_dir is not None:
         # if the directory contains .pth files
-        if os.path.exists(optional_args.save_dir + "*.pth"):
+        if os.path.exists(optional_args.save_dir + "/*.pth"):
             # load the checkpoint
             model = load_checkpoint(optional_args.save_dir, model, optional_args.arch)
     else:

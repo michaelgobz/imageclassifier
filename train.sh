@@ -43,4 +43,4 @@ fi
 
 # train the model
 
-python train.py  ./flowers --gpu --epochs=10 --arch=resnet50 --learning_rate=0.001  --save_dir=./checkpoint > train.log.txt
+python train.py  ./flowers --gpu --epochs=10 --arch=vgg16 --learning_rate=0.001  --save_dir=./checkpoint >

@@ -11,5 +11,5 @@ fi
 # predict the flower name from an image with predict.py along with the probability of that name.
 
 
-python predict.py ./flowers/test/1/image_06743.jpg --arch=resent50 --checkpoints_dir=./checkpoint --top_k=5 --categories_path=./cat_to_name.json --gpu > predict.log.txt
+python predict.py ./flowers/test/1/image_06743.jpg --arch=vgg --checkpoints_dir=./checkpoint --top_k=5 --categories_path=./cat_to_name.json --gpu
 
