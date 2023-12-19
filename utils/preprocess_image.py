@@ -34,4 +34,6 @@ def process_image(image):
     image = (image - [0.485, 0.456, 0.406]) / [0.229, 0.224, 0.225]
     image = image.transpose((2, 0, 1))
     image = torch.from_numpy(image)
+    image = image.float()
+    
     return image

@@ -1,18 +1,32 @@
 {
     "cSpell.words": [
         "archs",
+        "barbeton",
+        "bromelia",
+        "cautleya",
         "commandline",
+        "gaura",
+        "gazania",
+        "hippeastrum",
         "IMAGENET",
+        "Imshow",
+        "llandaff",
         "logps",
+        "masterwort",
         "ndarray",
         "optim",
+        "osteospermum",
+        "probs",
+        "silverbush",
         "Softmax",
+        "spicata",
         "testinglosses",
         "topk",
         "traininglosses",
         "trainloader",
         "udacity",
         "unsqueeze",
-        "validationlosses"
+        "validationlosses",
+        "validloader"
     ]
 }

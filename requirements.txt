@@ -1,6 +1,6 @@
 
-pytorch==2.1.2
-torchvision
+pytorch==1.0.2
+torchvision==0.2.2
 numpy
 pillow
 matplotlib

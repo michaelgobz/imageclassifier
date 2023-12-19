@@ -4,9 +4,14 @@ The data transforms to process the data
 make it ready for our machine learning model
 """
 
-from torchvision impport transforms
+from torchvision import transforms
 
 def get_transforms():
+    """_summary_
+
+    Returns:
+        _type_: _description_
+    """
     data_transform = transforms.Compose([transforms.Resize(256),
                                       transforms.CenterCrop(224),
                                       transforms.ToTensor(),
