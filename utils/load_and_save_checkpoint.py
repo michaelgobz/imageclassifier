@@ -1,23 +1,25 @@
 #!/usr/bin/env python3
 
-"""_summary_
+"""File contains the functions to load and save the checkpoint of the trained model
+   author: Michael Goboola
+    date: 2023-19-12
 """
 import torch
 from torch import optim
 
 
 def load_checkpoint(filepath, model_pretrained, arch):
-    """_summary_
+    """loads the saved checkpoint from a file path
 
     Args:
-        filepath (_type_): _description_
-        model_pretrained (_type_): _description_
-        arch (_type_): _description_
+        filepath (_str_): file path for the checkpoint
+        model_pretrained (_torch.Module_): pytorch pretrained model
+        arch (_str_): architecture  of the model
 
     Returns:
-        _type_: _description_
+        torch.Module: restored model from the checkpoint
     """
-    checkpoint = torch.load(filepath)
+    checkpoint = torch.load(filepath+'/checkpoint_'+arch+'.pth')
     model = None
 
     if arch == "resent":
@@ -43,18 +45,19 @@ def load_checkpoint(filepath, model_pretrained, arch):
 
 
 def save_checkpoint(dirpath, model, optimizer, rate, epochs, train_data, arch):
-    """_summary_
+    """saves the checkpoint of a trained model to a file path
 
     Args:
-        dirpath (_type_): _description_
-        model (_type_): _description_
-        optimizer (_type_): _description_
-        rate (_type_): _description_
-        epochs (_type_): _description_
-        train_data (_type_): _description_
-        arch (_type_): _description_
+        dirpath (_str_): directory path to save the checkpoint
+        model (_torch.MODULE_): trained model
+        optimizer (_torch.Optim_): optimizer
+        rate (_float_): learning rate
+        epochs (_int_): Number of epochs
+        train_data (_dataloader_): training data from the dataloader
+        arch (_str_):  model architecture
     """
     model.class_to_idx = train_data.class_to_idx
+    checkpoint = None
 
     if arch == "resnet":
         # the checkpoint
@@ -81,4 +84,4 @@ def save_checkpoint(dirpath, model, optimizer, rate, epochs, train_data, arch):
 
     name = f"checkpoint_{arch}"
 
-    torch.save(checkpoint, dirpath + "/" + name)
+    torch.save(checkpoint, dirpath + "/" + name + ".pth")

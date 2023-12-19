@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 
-"""_summary_
+"""File contains the call to the main function of the prediction
+   author: Michael Goboola
+   date: 2023-19-12
+   time: 20:00
 
 """
 
@@ -25,7 +28,7 @@ def main():
     model = load_checkpoint(args.checkpoint_path, model_pre, args.arch)
 
     # load the categories dictionary
-    cat_to_name = load_categories(args.cat_path)
+    cat_to_name = load_categories(args.categories_path)
 
     # get the sample image to predict
 
@@ -34,7 +37,7 @@ def main():
     # process the image
     image = process_image(image_path)
 
-    # predict the the image category
+    # predict the image category
 
     probs, classes, flowers = predict(image, model, args.top_k, cat_to_name, args.gpu)
 

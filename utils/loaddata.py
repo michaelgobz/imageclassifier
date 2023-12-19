@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""_summary_
+"""File contains the function to load the data from the data directory
+   author: Michael Goboola
+    date: 2023-19-12
+    time 20:00
 """
 import torch
 from torchvision import datasets
@@ -7,9 +10,15 @@ from torchvision import datasets
 
 def get_data(data_dir, train_transform, test_transform, batch_size=64):
     """
-
+    function to load the data from the data directory
     Args:
-        dir (str): _description_
+        data_dir: data directory
+        train_transform: torchvision transform for training data
+        test_transform:  torchvision transform for testing data
+        batch_size: batch size for the data loader
+
+    Returns: the train and valid data loaders
+
     """
 
     train = datasets.ImageFolder(data_dir + "/train", transform=train_transform)

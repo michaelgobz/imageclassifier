@@ -1,4 +1,8 @@
-""""
+""" loads all the functions from the utils folder
+   author: Michael Goboola
+    date: 2023-19-12
+    time 20:00
+
 
 """
 from .get_input_args import get_predict_input_args, get_train_input_args

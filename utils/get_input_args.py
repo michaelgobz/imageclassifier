@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 
 """function that obtains the command line arguments
-   
    Author: Michael Goboola
+   Date: 2023-19-12
+   Time: 20:00
+
 """
 
 import argparse
@@ -72,7 +74,7 @@ def get_train_input_args():
 
 def get_predict_input_args():
     """get_predict_input_args() function obtains the following command line arguments
-    thats used to predict the class of an image and these are:
+    that are used to predict the class of an image and these are:
 
     1. path - the path to the image to be used for inference
     2. checkpoint - the path to the checkpoint to use for inference
@@ -87,9 +89,9 @@ def get_predict_input_args():
     """
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--path",
+        "image_path",
         type=str,
-        default="/images/image.jpg",
+        default="./images/image.jpg",
         help="Path to the image to be used for inference",
     )
     parser.add_argument(
@@ -100,9 +102,9 @@ def get_predict_input_args():
     )
 
     parser.add_argument(
-        "--category_names",
+        "--categories_path",
         type=str,
-        default="/cat_to_name.json",
+        default="./cat_to_name.json",
         help="The category names of flowers",
     )
 
@@ -114,10 +116,15 @@ def get_predict_input_args():
     )
 
     parser.add_argument(
-        "--gpu", type=str, default="", help="Tell the model to run on he GPU"
+        "--gpu",
+        help="Tell the model to run on he GPU",
+        action="store_true"
     )
 
-    parser.add_argument("--arch", type=str, default="resent", help="model architecture")
+    parser.add_argument("--arch",
+                        type=str,
+                        default="resent",
+                        help="model architecture")
 
     args = parser.parse_args()
 

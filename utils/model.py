@@ -38,7 +38,7 @@ def get_pretrained_model(arch: str, pretrained: bool = True):
             "model arch and pretrained bool need to be provided, supported archs vgg and resnet)\
             and pretrained either true or false"
         )
-        print(f"re-run the training with the correct parameters {arch , pretrained}")
+        print(f"re-run the training with the correct parameter --arch to vgg or resent yours is {arch}")
         exit(1)
 
     return pretrained_model

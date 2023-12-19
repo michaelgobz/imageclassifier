@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 
-"""_summary_
+"""file contains the function to preprocess the image for prediction
+   author: Michael Goboola
+    date: 2023-19-12
+    time: 20:00
 """
 import torch
 import numpy as np
@@ -8,12 +11,20 @@ from PIL import Image
 
 
 def process_image(image):
-    
-    """_Scales, crops, and normalizes a PIL image for a PyTorch model,
-    returns a Numpy array
 
-    Returns:
-        ndarray: numpy representation of the processed image 
+    """
+    function to preprocess the image for prediction it does the following:
+    1. resize the image to 256x256
+    2. crop the image to 224x224
+    3. convert the image to a numpy array
+    4. normalize the image with the mean and std
+    5. transpose the image to the correct format
+    6. convert the image to a float tensor
+    Args:
+        image: path to the image
+
+    Returns: the image as a  float tensor
+
     """
     image = Image.open(image)
     image = image.resize((256, 256))
@@ -21,10 +32,10 @@ def process_image(image):
     width, height = image.size
     new_width = 224
     new_height = 224
-    left = (width - new_width) / 2
-    top = (height - new_height) / 2
-    right = (width + new_width) / 2
-    bottom = (height + new_height) / 2
+    left = int((width - new_width) / 2)
+    top = int((height - new_height) / 2)
+    right = int((width + new_width) / 2)
+    bottom = int((height + new_height) / 2)
     image = image.crop((left, top, right, bottom))
 
     # convert to a numpy array
