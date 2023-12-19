@@ -5,6 +5,14 @@ Project code for Udacity's AI Programming with Python Nanodegree program. In thi
 ## Part 1 - Developing an Image Classifier with Deep Learning
 
 In this first part of the project, I work through a Jupyter notebook to implement an image classifier with PyTorch. I built and trained a deep neural network on the flower data set, which is a dataset of 102 flower categories.
+the training is done on a GPU using colab and GPU compute units provided by Udacity for training the model.
+the model is trained using the resnet50 model over 10 optimization loops (epochs) and the accuracy is 71% on the test set.
+the model is also trained using the vgg16 model over 10 optimization loops (epochs) and the accuracy is 78% on the test set.
+
+ * The notebooks are these ones:
+    * [Image Classifier Project (resnet50).ipynb](Image%20Classifier%20Project%20(resnet50).ipynb)
+    * [Image Classifier Project (vgg16).ipynb](Image%20Classifier%20Project%20(vgg16).ipynb)
+
 
 
 ## Part 2 - Building the command line application
@@ -68,4 +76,83 @@ The results were as follows:
 ```
 image_06743.jpg
 
+Top 5 classes: ['pink primrose', 'tree mallow', 'hibiscus', 'balloon flower', 'mexican petunia']
+Top 5 probabilities: [0.9999, 0.0001, 0.0, 0.0, 0.0]
+the correct class is: pink primrose
 
+image_07090.jpg
+
+[9.9436212e-01 3.3665085e-03 1.0850213e-03 1.0014515e-03 8.0418795e-05]
+['10', '35', '54', '63', '50']
+['globe thistle', 'alpine sea holly', 'sunflower', 'black-eyed susan', 'common dandelion']
+the correct class is: globe thistle
+
+image_07949.jpg
+
+[0.70685905 0.13787131 0.08812183 0.04898518 0.00895899]
+['96', '44', '58', '97', '59']
+['camellia', 'poinsettia', 'geranium', 'mallow', 'orange dahlia']
+the correct class is: camellia`
+
+image_08004.jpg
+
+[9.99982297e-01 1.09877265e-05 3.52990287e-06 1.25030022e-06 1.13775900e-06]
+['102', '40', '90', '79', '6']
+['blackberry lily', 'lenten rose', 'canna lily', 'toad lily', 'tiger lily']
+the correct class is: blackberry lily
+
+image_03098.jpg
+
+[0.6033509  0.12982507 0.05468579 0.05096426 0.04762986]
+['4', '68', '11', '40', '36']
+['sweet pea', 'bearded iris', 'snapdragon', 'lenten rose', 'ruby-lipped cattleya']
+the correct class is: sweet pea
+
+image_03994.jpg
+
+[9.9997449e-01 1.2721309e-05 6.3408888e-06 5.1764923e-06 4.8017961e-07]
+['12', '100', '77', '50', '38']
+["colt's foot", 'blanket flower', 'passion flower', 'common dandelion', 'great masterwort']
+the correct class is: colt's foot
+
+image_05769.jpg
+
+[9.8769009e-01 1.1085894e-02 8.1221649e-04 1.8835271e-04 1.6258494e-04]
+['13', '29', '17', '73', '77']
+['king protea', 'artichoke', 'purple coneflower', 'water lily', 'passion flower']
+the correct class is: king protea
+
+image_06052.jpg
+
+[0.8478797  0.10159896 0.03893943 0.00342476 0.00244155]
+['14', '17', '29', '10', '67']
+['spear thistle', 'purple coneflower', 'artichoke', 'globe thistle', 'spring crocus']
+the correct class is: spear thistle
+``` 
+the  results are produced using resnet50 model
+
+#### Bash scripts
+Included are the bash scripts I used to run the program on the GPU and CPU. the bash scripts are as follows:
+
+* train.sh 
+* predict.sh
+
+they are used as follows:
+
+```bash
+bash train.sh
+bash predict.sh
+```
+
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
+
+## conclusion
+
+Thanks to Udacity for training provided in pytorch and the advanced mathematics. I enjoyed working on this project and learned a lot about deep learning and PyTorch.
+I hope to use this knowledge in the future to build more advanced deep learning models.
+Thanks to udacity and colab for providing the GPU for training the model.
+
+
+## Author
+[Michael Goboola](https://github.com/michaelgobz/)
