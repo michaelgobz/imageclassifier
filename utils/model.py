@@ -56,7 +56,7 @@ def create_the_classifier(model, arch):
         the model architecture
     """
 
-    if arch == "resent":
+    if arch == "resnet50":
         model.fc = nn.Sequential(
             nn.Linear(2048, 1024),
             nn.ReLU(),
@@ -66,7 +66,7 @@ def create_the_classifier(model, arch):
             nn.Linear(256, 102),
             nn.LogSoftmax(dim=1),
         )
-    elif arch == "vgg":
+    elif arch == "vgg16":
         model.classifier = nn.Sequential(
             nn.Linear(25088, 1024),
             nn.ReLU(),
@@ -98,10 +98,10 @@ def define_optimizer(model, arch, learning_rate):
     Returns:
         optimizer : the optimizer for the model based on the architecture
     """
-    optimizer = None
-    if arch == "resnet":
+
+    if arch == "resnet50":
         optimizer = optim.Adam(model.fc.parameters(), lr=learning_rate)
-    elif arch == "vgg":
+    elif arch == "vgg16":
         optimizer = optim.Adam(model.classifier.parameters(), lr=learning_rate)
 
     return optimizer

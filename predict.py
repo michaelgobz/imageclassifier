@@ -25,7 +25,7 @@ def main():
 
     # load the trained model from the checkpoint
     model_pre = get_pretrained_model(args.arch, pretrained=True)
-    model = load_checkpoint(args.checkpoint_path, model_pre, args.arch)
+    model = load_checkpoint(args.checkpoints_dir, model_pre, args.arch)
 
     # load the categories dictionary
     cat_to_name = load_categories(args.categories_path)

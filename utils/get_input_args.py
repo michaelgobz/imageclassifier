@@ -94,7 +94,7 @@ def get_predict_input_args():
         help="Path to the image to be used for inference",
     )
     parser.add_argument(
-        "--checkpoint",
+        "--checkpoints_dir",
         type=str,
         default="/checkpoints/checkpoint_resnet50.pth",
         help="path to the checkpoint to use for inference",
