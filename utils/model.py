@@ -115,7 +115,7 @@ def get_device(args=None):
     device = None
     if args is None:
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    else:
+    elif args:
         device = "cuda"
 
     return device

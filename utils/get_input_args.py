@@ -28,11 +28,12 @@ def get_train_input_args():
     # add the expected arguments
 
     parser.add_argument(
-        "--dir",
+        "data_directory",
         type=str,
-        default="/flowers",
+        default="./flowers",
         help="directory containing the training data",
     )
+
     parser.add_argument(
         "--arch",
         type=str,
@@ -46,9 +47,9 @@ def get_train_input_args():
         help="The number of times to train the model (optimization loop)",
     )
     parser.add_argument(
-        "--save-dir",
+        "--save_dir",
         type=str,
-        default="/checkpoints",
+        default="./checkpoints",
         help="The directory to save the model to checkpoints",
     )
 
@@ -59,7 +60,9 @@ def get_train_input_args():
         help="The model leaning rate, small float percentage",
     )
     parser.add_argument(
-        "--gpu", type=str, default="", help="Tell the model to run on he GPU"
+        "--gpu", help="Tell the model to run on he GPU",
+        action="store_true"
+
     )
 
     args = parser.parse_args()

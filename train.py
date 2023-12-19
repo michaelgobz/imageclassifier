@@ -36,22 +36,19 @@ def main():
     Returns: None
 
     """
-    print(sys.argv[0])
 
     start_time = time()
     # get the arguments
     optional_args = get_train_input_args()
 
-    print(optional_args)
-
     # define the device
-    device = get_device(args="gpu")
+    device = get_device(args=optional_args.gpu)
 
     # get the transforms
     train_tf, test_tf = get_transforms()
 
     # load the data
-    trainloader, validloader = get_data(sys.argv[1], train_tf, test_tf)
+    trainloader, validloader = get_data(optional_args.data_directory, train_tf, test_tf)
 
     # get the pre-defined model
 
@@ -69,11 +66,11 @@ def main():
     optimizer = define_optimizer(model, optional_args.arch, optional_args.learning_rate)
 
     # check if checkpoint directory had checkpoints
-    if optional_args.checkpoint:
+    if optional_args.save_dir is not None:
         # if the directory contains .pth files
         if os.path.exists(optional_args.save_dir + "*.pth"):
             # load the checkpoint
-            model = load_checkpoint(optional_args.checkpoint, model, optional_args.arch)
+            model = load_checkpoint(optional_args.save_dir, model, optional_args.arch)
     else:
         print("No checkpoint directory provided\n")
         print("provide the checkpoint directory to load or save the checkpoint")
