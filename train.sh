@@ -64,7 +64,9 @@ fi
 
 # train the model
 echo "Training has started"
+echo "______________________________________________________________________________________________"
 
 python train.py  ./flowers --gpu --epochs=10 --arch=resnet50 --learning_rate=0.001  --save_dir=./checkpoints
 
+echo "______________________________________________________________________________________________"
 echo "Training has finished"

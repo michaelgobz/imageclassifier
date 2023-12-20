@@ -25,10 +25,10 @@ def get_pretrained_model(arch: str, pretrained: bool = True):
         _torch.Module_: a pretrained model
     """
     pretrained_model = None
-    if arch == "resent50" and pretrained:
+    if arch == "resnet50" and pretrained:
         pretrained_model = models.resnet50(pretrained=pretrained)
 
-    elif pretrained == 0 and arch == "resent50":
+    elif pretrained == 0 and arch == "resnet50":
         pretrained_model = models.resnet50(weights="IMAGENET_1k")
 
     elif pretrained and arch == "vgg16":
@@ -42,7 +42,7 @@ def get_pretrained_model(arch: str, pretrained: bool = True):
             "model arch and pretrained bool need to be provided, supported architectures are vgg16 and resnet50)\
             and pretrained either true or false"
         )
-        print(f"re-run the training with the correct parameter --arch to vgg16 or resent50 yours is {arch}")
+        print(f"re-run the training with the correct parameter --arch to vgg16 or resnet50 yours is {arch}")
         exit(1)
 
     return pretrained_model
