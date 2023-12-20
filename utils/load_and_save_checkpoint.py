@@ -21,7 +21,8 @@ def load_checkpoint(file_dir, model_pretrained, arch):
     """
     try:
         checkpoint = torch.load(file_dir + "/checkpoint_" + arch + ".pth")
-
+        model = None
+        
         if arch == "resent50":
             optimizer = optim.Adam(
                 model_pretrained.fc.parameters(), lr=checkpoint["learning_rate"]
@@ -30,7 +31,7 @@ def load_checkpoint(file_dir, model_pretrained, arch):
             optimizer.load_state_dict(checkpoint["optimizer_state"])
             model_pretrained.load_state_dict(checkpoint["state_dict"])
             model_pretrained.fc.class_to_idx = checkpoint["class_to_idx"]
-            return model_pretrained
+            model = model_pretrained
         elif arch == "vgg16":
             optimizer = optim.Adam(
                 model_pretrained.classifier.parameters(), lr=checkpoint["learning_rate"]
@@ -39,7 +40,9 @@ def load_checkpoint(file_dir, model_pretrained, arch):
             optimizer.load_state_dict(checkpoint["optimizer_state"])
             model_pretrained.load_state_dict(checkpoint["state_dict"])
             model_pretrained.class_to_idx = checkpoint["class_to_idx"]
-            return model_pretrained
+            model = model_pretrained
+            
+        return model
 
     except FileNotFoundError as e:
         print(f"Error loading checkpoint {e}")
