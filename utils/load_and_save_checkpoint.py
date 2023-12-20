@@ -8,21 +8,21 @@ import torch
 from torch import optim
 
 
-def load_checkpoint(filepath, model_pretrained, arch):
+def load_checkpoint(file_dir, model_pretrained, arch):
     """loads the saved checkpoint from a file path
 
     Args:
-        filepath (_str_): file path for the checkpoint
+        file_dir (_str_): directory path to the checkpoints
         model_pretrained (_torch.Module_): pytorch pretrained model
         arch (_str_): architecture  of the model
 
     Returns:
         torch.Module: restored model from the checkpoint
     """
-    checkpoint = torch.load(filepath+'/checkpoint_'+arch+'.pth')
+    checkpoint = torch.load(file_dir+'/checkpoint_'+arch+'.pth')
     model = None
 
-    if arch == "resent":
+    if arch == "resent50":
         optimizer = optim.Adam(
             model_pretrained.fc.parameters(), lr=checkpoint["learning_rate"]
         )
@@ -31,7 +31,7 @@ def load_checkpoint(filepath, model_pretrained, arch):
         model_pretrained.load_state_dict(checkpoint["state_dict"])
         model_pretrained.class_to_idx = checkpoint["class_to_idx"]
         model = model_pretrained
-    elif arch == "vgg":
+    elif arch == "vgg16":
         optimizer = optim.Adam(
             model_pretrained.classifier.parameters(), lr=checkpoint["learning_rate"]
         )

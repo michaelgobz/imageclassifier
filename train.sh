@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
 
 if [ ! -d "flowers" ]; then
-    wget https://s3.amazonaws.com/content.udacity-data.com/courses/nd188/flower_data.zip
+    wget https://s3.amazonaws.com/content.udacity-data.com/nd089/flower_data.tar.gz
     mkdir "./flowers"
-    unzip flower_data.zip -d flowers
+    tar -xvzf flower_data.tar.gz -C ./flowers
+
+else
+    echo "flowers directory already exists"
+    echo "proceeding to check the environment"
 fi
 
 if [ ! -d "checkpoint" ]; then
@@ -41,6 +45,21 @@ else
 
 fi
 
-# train the model
+# create the checkpoints directory if it does not exist
+echo "Creating the checkpoints directory"
 
-python train.py  ./flowers --gpu --epochs=10 --arch=vgg16 --learning_rate=0.001  --save_dir=./checkpoint >
+if [ ! -d 'checkpoints' ]; then
+    echo "checkpoint directory does not exist =====> creating one"
+    mkdir "./checkpoints"
+
+else
+    echo "checkpoint directory already exists"
+    echo "proceeding to train the model and save the checkpoints"
+fi
+
+# train the model
+echo "Training has started"
+
+python train.py  ./flowers --gpu --epochs=10 --arch=vgg16 --learning_rate=0.001  --save_dir=./checkpoints
+
+echo "Training has finished"

@@ -45,14 +45,15 @@ def imshow(image, ax=None, title=None):
     image = np.clip(image, 0, 1)
 
     ax.imshow(image)
+    ax.set_title(title)
 
     return ax
 
 
 def view_recon(img, recon):
-    ''' Function for displaying an image (as a PyTorch Tensor), and its
+    """ Function for displaying an image (as a PyTorch Tensor), and its
         reconstruction also a PyTorch Tensor
-    '''
+    """
 
     fig, axes = plt.subplots(ncols=2, sharex=True, sharey=True)
     axes[0].imshow(img.numpy().squeeze())

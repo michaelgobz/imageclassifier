@@ -107,21 +107,21 @@ def define_optimizer(model, arch, learning_rate):
     return optimizer
 
 
-def get_device(args=None):
+def get_device(gpu=False):
     """get the device to run the model on
 
     Args:
-        args (_str_, optional): architecture of the model. Defaults to None.
+        gpu: boolean to tell the model to run on the gpu or not
 
     Returns:
         _str_: device string representing the device to run the model on
     """
 
     device = None
-    if args is None:
-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    elif args:
+    if gpu:
         device = "cuda"
+    else:
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     return device
 

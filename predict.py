@@ -23,10 +23,6 @@ def main():
     # get the input args of prediction
     args = get_predict_input_args()
 
-    # load the trained model from the checkpoint
-    model_pre = get_pretrained_model(args.arch, pretrained=True)
-    model = load_checkpoint(args.checkpoints_dir, model_pre, args.arch)
-
     # load the categories dictionary
     cat_to_name = load_categories(args.categories_path)
 
@@ -36,6 +32,10 @@ def main():
 
     # process the image
     image = process_image(image_path)
+
+    # load the trained model from the checkpoint
+    model_pre = get_pretrained_model(args.arch, pretrained=True)
+    model = load_checkpoint(args.checkpoints_dir, model_pre, args.arch)
 
     # predict the image category
 

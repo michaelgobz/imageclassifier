@@ -12,7 +12,7 @@ import argparse
 
 def get_train_input_args():
     """ get_train_input_args() function obtains the following command line arguments:
-    thats used to train the model and save the model to a checkpoint and these are:
+    that are  used to train the model and save the model to a checkpoint and these are:
     1. data_dir - the directory of the training data
     2. arch - the model architecture
     3. learning_rate - the learning rate of the model

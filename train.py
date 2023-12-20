@@ -10,8 +10,8 @@ it runs on the gpu by default but also cpu but not advised to do so
 
 """
 import os
+import re
 import datetime
-import sys
 from time import time
 
 from utils import (
@@ -25,7 +25,6 @@ from utils import (
     get_transforms,
     get_data,
     get_train_input_args,
-    load_checkpoint,
 )
 
 
@@ -36,13 +35,16 @@ def main():
     Returns: None
 
     """
+    # checkpoint path pattern
+    pattern = r".*\.pth"
+    flag = False
 
     start_time = time()
     # get the arguments
     optional_args = get_train_input_args()
 
     # define the device
-    device = get_device(args=optional_args.gpu)
+    device = get_device(optional_args.gpu)
 
     # get the transforms
     train_tf, test_tf = get_transforms()
@@ -66,36 +68,40 @@ def main():
     optimizer = define_optimizer(model, optional_args.arch, optional_args.learning_rate)
 
     # check if checkpoint directory had checkpoints
-    if optional_args.save_dir is not None:
+    for file in os.listdir(optional_args.save_dir):
         # if the directory contains .pth files
-        if os.path.exists(optional_args.save_dir + "/*.pth"):
-            # load the checkpoint
-            model = load_checkpoint(optional_args.save_dir, model, optional_args.arch)
-    else:
-        print("No checkpoint directory provided\n")
-        print("provide the checkpoint directory to load or save the checkpoint")
-        exit(1)
+        if re.match(r".*\.pth", file):
+            flag = True
+            break
 
     # train the model
+    if flag:
+        # load the checkpoint
+        print("loading the checkpoint")
+        print("Use the checkpoint you saved from previous training loop to continue to the prediction stage")
+        print("load the checkpoint using the predict.sh script")
+        exit(1)
+    else:
+        print("training the model from scratch")
+        trained_model, optimizer = train(
+            model, optional_args.epochs,
+            trainloader, validloader,
+            criterion, optimizer, device
+        )
+        # save the model check point
+        print(f"creating a checkpoint at {datetime.datetime.now()}")
 
-    trained_model, optimizer = train(
-        model, optional_args.epochs, trainloader, validloader, criterion, optimizer, device
-    )
+        save_checkpoint(
+            optional_args.save_dir,
+            trained_model,
+            optimizer,
+            optional_args.learning_rate,
+            optional_args.epochs,
+            trainloader,
+            optional_args.arch,
+        )
 
-    # save the model check point
-    print(f"creating a checkpoint at {datetime.datetime.now()}")
-
-    save_checkpoint(
-        optional_args.save_dir,
-        trained_model,
-        optimizer,
-        optional_args.learning_rate,
-        optional_args.epochs,
-        trainloader,
-        optional_args.arch,
-    )
-
-    print("Checkpointing complete")
+        print("Checkpointing complete")
 
     end_time = time()
 
