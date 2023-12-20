@@ -75,14 +75,16 @@ def main():
             break
 
     # train the model
-    if flag:
+    if flag and not optional_args.force:
         # load the checkpoint
-        print("loading the checkpoint")
-        print("Use the checkpoint you saved from previous training loop to continue to the prediction stage")
-        print("load the checkpoint using the predict.sh script")
+        print("You have a checkpoint saved in the checkpoint directory\n")
+        print("Use the checkpoint you saved from previous training loop to continue to the prediction stage\n")
+        print("load the checkpoint using the predict.sh script\n")
+        print("Still want to train the model from scratch? use the --force flag and run the script again\n")
         exit(1)
-    else:
-        print("training the model from scratch")
+
+    elif flag and optional_args.force:
+        print("Training the model from scratch")
         trained_model, optimizer = train(
             model, optional_args.epochs,
             trainloader, validloader,

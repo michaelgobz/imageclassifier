@@ -67,6 +67,9 @@ def get_train_input_args():
 
     )
 
+    parser.add_argument("--force", help="Force the training of the model",
+                        action="store_true")
+
     args = parser.parse_args()
 
     return args
