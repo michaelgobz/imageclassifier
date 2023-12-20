@@ -44,7 +44,7 @@ def main():
     # predict the image category
     try:
         probs, classes, flowers = predict(
-            image, model, args.top_k, cat_to_name, args.gpu
+            image, model, args.top_k, cat_to_name, device=args.gpu
         )
 
         # print the class of the image with the highest probability.
@@ -56,7 +56,6 @@ def main():
 
     except (
         AssertionError,
-        RuntimeError,
         ResourceWarning,
         UnboundLocalError,
     ) as e:

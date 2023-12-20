@@ -253,6 +253,7 @@ def predict(image_path, model, device, cat_path, top_k=5):
 
     """
     model.eval()
+    print(device)
     model.to(device)
     image = process_image(image_path)
     image = image.unsqueeze(0)
