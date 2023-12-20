@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+echo "Checking whether the data exists"
+
 if [ ! -d "flowers" ]; then
     wget https://s3.amazonaws.com/content.udacity-data.com/nd089/flower_data.tar.gz
     mkdir "./flowers"
@@ -7,11 +9,14 @@ if [ ! -d "flowers" ]; then
 
 else
     echo "flowers directory already exists"
-    echo "proceeding to check the environment"
+    echo "proceeding to check whether the checkpoints directory exists"
 fi
 
-if [ ! -d "checkpoint" ]; then
-    mkdir "./checkpoint"
+if [ ! -d "checkpoints" ]; then
+    mkdir "./checkpoints"
+else
+    echo "checkpoints directory already exists"
+    echo "proceeding to check the environment"
 fi
 
 # check for the environment
