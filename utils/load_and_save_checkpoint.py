@@ -29,7 +29,7 @@ def load_checkpoint(file_dir, model_pretrained, arch):
             model_pretrained.fc = checkpoint["classifier"]
             optimizer.load_state_dict(checkpoint["optimizer_state"])
             model_pretrained.load_state_dict(checkpoint["state_dict"])
-            model_pretrained.class_to_idx = checkpoint["class_to_idx"]
+            model_pretrained.fc.class_to_idx = checkpoint["class_to_idx"]
             return model_pretrained
         elif arch == "vgg16":
             optimizer = optim.Adam(
@@ -54,7 +54,7 @@ def save_checkpoint(dirpath, model, optimizer, rate, epochs, train_data, arch):
         optimizer (_torch.Optim_): optimizer
         rate (_float_): learning rate
         epochs (_int_): Number of epochs
-        train_data (_dataloader_): training data from the dataloader
+        train_data (_dataloader_): training data from the dataset
         arch (_str_):  model architecture
     """
     try:
@@ -70,7 +70,7 @@ def save_checkpoint(dirpath, model, optimizer, rate, epochs, train_data, arch):
                 "arch": arch,
                 "classifier": model.fc,
                 "optimizer_state": optimizer.state_dict(),
-                "class_to_idx": model.class_to_idx,
+                "class_to_idx": model.fc.class_to_idx,
                 "state_dict": model.state_dict(),
             }
         elif arch == "vgg16":

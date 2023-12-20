@@ -49,7 +49,7 @@ def main():
     train_tf, test_tf = get_transforms()
 
     # load the data
-    trainloader, validloader = get_data(optional_args.data_directory, train_tf, test_tf)
+    trainloader, validloader, train_dataset = get_data(optional_args.data_directory, train_tf, test_tf)
 
     # get the pre-defined model
 
@@ -109,7 +109,7 @@ def main():
                 optimizer,
                 optional_args.learning_rate,
                 optional_args.epochs,
-                trainloader,
+                train_dataset,
                 optional_args.arch,
             )
 

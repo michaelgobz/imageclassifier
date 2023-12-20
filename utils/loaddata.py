@@ -27,4 +27,4 @@ def get_data(data_dir, train_transform, test_transform, batch_size=64):
     trainloader = torch.utils.data.DataLoader(train, batch_size=batch_size, shuffle=True)
     validloader = torch.utils.data.DataLoader(valid, batch_size=batch_size, shuffle=True)
 
-    return trainloader, validloader
+    return trainloader, validloader, train
