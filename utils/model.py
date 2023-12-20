@@ -27,29 +27,43 @@ def get_pretrained_model(arch: str, pretrained: bool = True):
     pretrained_model = None
     if arch == "resnet50" and pretrained:
         pretrained_model = models.resnet50(pretrained=pretrained)
+        # Freeze parameters so we don't backprop through them
+        for param in pretrained_model.parameters():
+            param.requires_grad = False
 
     elif pretrained == 0 and arch == "resnet50":
         pretrained_model = models.resnet50(weights="IMAGENET_1k")
+        # Freeze parameters so we don't backprop through them
+        for param in pretrained_model.parameters():
+            param.requires_grad = False
 
     elif pretrained and arch == "vgg16":
         pretrained_model = models.vgg16(pretrained=pretrained)
+        # Freeze parameters so we don't backprop through them
+        for param in pretrained_model.parameters():
+            param.requires_grad = False
 
     elif pretrained == 0 and arch == "vgg16":
         pretrained_model = models.vgg16(weights="IMAGENET_1k")
+        # Freeze parameters so we don't backprop through them
+        for param in pretrained_model.parameters():
+            param.requires_grad = False
 
     else:
         print(
             "model arch and pretrained bool need to be provided, supported architectures are vgg16 and resnet50)\
             and pretrained either true or false"
         )
-        print(f"re-run the training with the correct parameter --arch to vgg16 or resnet50 yours is {arch}")
+        print(
+            f"re-run the training with the correct parameter --arch to vgg16 or resnet50 yours is {arch}"
+        )
         exit(1)
 
     return pretrained_model
 
 
 def create_the_classifier(model, arch):
-    """ This creates the classifier on top of the pretrained model so thats we use transfer learning
+    """This creates the classifier on top of the pretrained model so thats we use transfer learning
     to train the model on our data  with is a multi-class classification
     Returns:
         _torch.Module_: the model with the classifier bit changed to have out features of 102 and inputs depending on
@@ -82,7 +96,7 @@ def create_the_classifier(model, arch):
 
 
 def define_loss_criterion():
-    """ creates the loss criterion
+    """creates the loss criterion
 
     Returns:
         _NLLLoss_: the loss criterion for a multi-class classification
@@ -127,17 +141,17 @@ def get_device(gpu=False):
 
 
 def train(
-        model,
-        epochs,
-        trainloader,
-        validloader,
-        criterion,
-        optimizer,
-        device,
-        steps_for_eval=0,
-        print_every=10,
+    model,
+    epochs,
+    trainloader,
+    validloader,
+    criterion,
+    optimizer,
+    device,
+    steps_for_eval=0,
+    print_every=10,
 ):
-    """ The function to train the model that trains the model over the optimisation loop and prints the training
+    """The function to train the model that trains the model over the optimisation loop and prints the training
     and validation loss and accuracy.
 
     Args:
