@@ -8,7 +8,7 @@ import torch
 from torch import optim
 
 
-def load_checkpoint(file_dir, model_pretrained, arch):
+def load_checkpoint(file_dir, model_pretrained, arch, device="cpu"):
     """loads the saved checkpoint from a file path
 
     Args:
@@ -20,15 +20,16 @@ def load_checkpoint(file_dir, model_pretrained, arch):
         torch.Module: restored model from the checkpoint
     """
     try:
-        checkpoint = torch.load(file_dir + "/checkpoint_" + arch + ".pth")
+        checkpoint = torch.load(file_dir + "/checkpoint_" + arch + ".pth", map_location=device)
         model = None
         
-        if arch == "resent50":
+        if arch == "resnet50":
             optimizer = optim.Adam(
                 model_pretrained.fc.parameters(), lr=checkpoint["learning_rate"]
             )
             model_pretrained.fc = checkpoint["classifier"]
-            optimizer.load_state_dict(checkpoint["optimizer_state"])
+            # loading the optimizer state throws a bug so we will not load it
+            # optimizer.load_state_dict(checkpoint["optimizer_state"])
             model_pretrained.load_state_dict(checkpoint["state_dict"])
             model_pretrained.fc.class_to_idx = checkpoint["class_to_idx"]
             model = model_pretrained

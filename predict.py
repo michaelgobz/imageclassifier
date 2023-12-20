@@ -14,6 +14,7 @@ from utils import (
     get_pretrained_model,
     process_image,
     predict,
+    get_device
 )
 
 
@@ -32,6 +33,9 @@ def main():
 
     # process the image
     image = process_image(image_path)
+
+    # get the device
+    device = get_device(args.gpu)
 
     # load the trained model from the checkpoint
     model_pre = get_pretrained_model(args.arch, pretrained=True)
