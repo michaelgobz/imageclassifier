@@ -137,7 +137,7 @@ def main():
                 optimizer,
                 optional_args.learning_rate,
                 optional_args.epochs,
-                trainloader,
+                train_dataset,
                 optional_args.arch,
             )
 
