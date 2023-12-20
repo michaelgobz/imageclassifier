@@ -20,7 +20,7 @@ def load_checkpoint(file_dir, model_pretrained, arch, device="cpu"):
         torch.Module: restored model from the checkpoint
     """
     try:
-        checkpoint = torch.load(file_dir + "/checkpoint_" + arch + ".pth", map_location=device)
+        checkpoint = torch.load(file_dir + "/checkpoint_" + arch + ".pth")
         model = None
         
         if arch == "resnet50":
