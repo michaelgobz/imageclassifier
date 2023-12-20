@@ -239,7 +239,7 @@ def train(
 # predict using the model
 
 
-def predict(image_path, model, device, cat_path, top_k=5):
+def predict(image_path, model, cat_path, top_k=5, device="gpu"):
     """
     Predict the class (or classes) of an image using a trained deep learning model.
     Args:
