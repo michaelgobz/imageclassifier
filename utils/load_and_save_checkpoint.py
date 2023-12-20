@@ -58,10 +58,11 @@ def save_checkpoint(dirpath, model, optimizer, rate, epochs, train_data, arch):
         arch (_str_):  model architecture
     """
     try:
-        model.class_to_idx = train_data.class_to_idx
+
         checkpoint = None
 
         if arch == "resnet50":
+            model.fc.class_to_idx = train_data.class_to_idx
             # the checkpoint
             checkpoint = {
                 "epochs": epochs,
@@ -73,6 +74,7 @@ def save_checkpoint(dirpath, model, optimizer, rate, epochs, train_data, arch):
                 "state_dict": model.state_dict(),
             }
         elif arch == "vgg16":
+            model.class_to_idx = train_data.class_to_idx
             # the checkpoint
             checkpoint = {
                 "epochs": epochs,
