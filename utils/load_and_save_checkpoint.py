@@ -58,9 +58,6 @@ def save_checkpoint(dirpath, model, optimizer, rate, epochs, train_data, arch):
         arch (_str_):  model architecture
     """
     try:
-
-        checkpoint = None
-
         if arch == "resnet50":
             model.fc.class_to_idx = train_data.class_to_idx
             # the checkpoint
@@ -73,6 +70,10 @@ def save_checkpoint(dirpath, model, optimizer, rate, epochs, train_data, arch):
                 "class_to_idx": model.fc.class_to_idx,
                 "state_dict": model.state_dict(),
             }
+
+            name = f"checkpoint_{arch}"
+            torch.save(checkpoint, dirpath + "/" + name + ".pth")
+            
         elif arch == "vgg16":
             model.class_to_idx = train_data.class_to_idx
             # the checkpoint
@@ -86,8 +87,8 @@ def save_checkpoint(dirpath, model, optimizer, rate, epochs, train_data, arch):
                 "state_dict": model.state_dict(),
             }
 
-        name = f"checkpoint_{arch}"
-        torch.save(checkpoint, dirpath + "/" + name + ".pth")
+            name = f"checkpoint_{arch}"
+            torch.save(checkpoint, dirpath + "/" + name + ".pth")
 
     except FileNotFoundError as e:
         print(f"Error saving checkpoint {e}")
