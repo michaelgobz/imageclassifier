@@ -77,32 +77,74 @@ def main():
     if flag and not optional_args.force:
         # load the checkpoint
         print("You have a checkpoint saved in the checkpoint directory\n")
-        print("Use the checkpoint you saved from previous training loop to continue to the prediction stage\n")
+        print(
+            "Use the checkpoint you saved from previous training loop to continue \
+                to the prediction stage\n"
+        )
         print("load the checkpoint using the predict.sh script\n")
-        print("Still want to train the model from scratch? use the --force flag and run the script again\n")
+        print(
+            "Still want to train the model from scratch? use the --force flag and run \
+                the script again\n"
+        )
         exit(1)
 
     elif flag and optional_args.force:
-        print("Training the model from scratch")
-        trained_model, optimizer = train(
-            model, optional_args.epochs,
-            trainloader, validloader,
-            criterion, optimizer, device
-        )
-        # save the model check point
-        print(f"creating a checkpoint at {datetime.datetime.now()}")
+        try:
+            print("Training the model from scratch")
+            trained_model, optimizer = train(
+                model,
+                optional_args.epochs,
+                trainloader,
+                validloader,
+                criterion,
+                optimizer,
+                device,
+            )
+            # save the model check point
+            print(f"creating a checkpoint at {datetime.datetime.now()}")
 
-        save_checkpoint(
-            optional_args.save_dir,
-            trained_model,
-            optimizer,
-            optional_args.learning_rate,
-            optional_args.epochs,
-            trainloader,
-            optional_args.arch,
-        )
+            save_checkpoint(
+                optional_args.save_dir,
+                trained_model,
+                optimizer,
+                optional_args.learning_rate,
+                optional_args.epochs,
+                trainloader,
+                optional_args.arch,
+            )
 
-        print("Checkpointing complete")
+            print("Checkpointing complete")
+        except (RuntimeError, ResourceWarning) as e:
+            print(f"Error training the model {e}")
+    else:
+        try:
+            print("Training the model from scratch")
+            trained_model, optimizer = train(
+                model,
+                optional_args.epochs,
+                trainloader,
+                validloader,
+                criterion,
+                optimizer,
+                device,
+            )
+            # save the model check point
+            print(f"creating a checkpoint at {datetime.datetime.now()}")
+
+            save_checkpoint(
+                optional_args.save_dir,
+                trained_model,
+                optimizer,
+                optional_args.learning_rate,
+                optional_args.epochs,
+                trainloader,
+                optional_args.arch,
+            )
+
+            print("Checkpointing complete")
+
+        except (RuntimeError, ResourceWarning, AssertionError) as e:
+            print(f"Error training the model {e}")
 
     end_time = time()
 

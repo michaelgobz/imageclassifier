@@ -19,29 +19,30 @@ def load_checkpoint(file_dir, model_pretrained, arch):
     Returns:
         torch.Module: restored model from the checkpoint
     """
-    checkpoint = torch.load(file_dir+'/checkpoint_'+arch+'.pth')
-    model = None
+    try:
+        checkpoint = torch.load(file_dir + "/checkpoint_" + arch + ".pth")
 
-    if arch == "resent50":
-        optimizer = optim.Adam(
-            model_pretrained.fc.parameters(), lr=checkpoint["learning_rate"]
-        )
-        model_pretrained.fc = checkpoint["classifier"]
-        optimizer.load_state_dict(checkpoint["optimizer_state"])
-        model_pretrained.load_state_dict(checkpoint["state_dict"])
-        model_pretrained.class_to_idx = checkpoint["class_to_idx"]
-        model = model_pretrained
-    elif arch == "vgg16":
-        optimizer = optim.Adam(
-            model_pretrained.classifier.parameters(), lr=checkpoint["learning_rate"]
-        )
-        model_pretrained.classifier = checkpoint["classifier"]
-        optimizer.load_state_dict(checkpoint["optimizer_state"])
-        model_pretrained.load_state_dict(checkpoint["state_dict"])
-        model_pretrained.class_to_idx = checkpoint["class_to_idx"]
-        model = model_pretrained
+        if arch == "resent50":
+            optimizer = optim.Adam(
+                model_pretrained.fc.parameters(), lr=checkpoint["learning_rate"]
+            )
+            model_pretrained.fc = checkpoint["classifier"]
+            optimizer.load_state_dict(checkpoint["optimizer_state"])
+            model_pretrained.load_state_dict(checkpoint["state_dict"])
+            model_pretrained.class_to_idx = checkpoint["class_to_idx"]
+            return model_pretrained
+        elif arch == "vgg16":
+            optimizer = optim.Adam(
+                model_pretrained.classifier.parameters(), lr=checkpoint["learning_rate"]
+            )
+            model_pretrained.classifier = checkpoint["classifier"]
+            optimizer.load_state_dict(checkpoint["optimizer_state"])
+            model_pretrained.load_state_dict(checkpoint["state_dict"])
+            model_pretrained.class_to_idx = checkpoint["class_to_idx"]
+            return model_pretrained
 
-    return model
+    except FileNotFoundError as e:
+        print(f"Error loading checkpoint {e}")
 
 
 def save_checkpoint(dirpath, model, optimizer, rate, epochs, train_data, arch):
@@ -56,32 +57,35 @@ def save_checkpoint(dirpath, model, optimizer, rate, epochs, train_data, arch):
         train_data (_dataloader_): training data from the dataloader
         arch (_str_):  model architecture
     """
-    model.class_to_idx = train_data.class_to_idx
-    checkpoint = None
+    try:
+        model.class_to_idx = train_data.class_to_idx
+        checkpoint = None
 
-    if arch == "resnet":
-        # the checkpoint
-        checkpoint = {
-            "epochs": epochs,
-            "learning_rate": rate,
-            "arch": arch,
-            "classifier": model.fc,
-            "optimizer_state": optimizer.state_dict(),
-            "class_to_idx": model.class_to_idx,
-            "state_dict": model.state_dict(),
-        }
-    elif arch == "vgg":
-        # the checkpoint
-        checkpoint = {
-            "epochs": epochs,
-            "learning_rate": rate,
-            "arch": arch,
-            "classifier": model.classifier,
-            "optimizer_state": optimizer.state_dict(),
-            "class_to_idx": model.class_to_idx,
-            "state_dict": model.state_dict(),
-        }
+        if arch == "resnet":
+            # the checkpoint
+            checkpoint = {
+                "epochs": epochs,
+                "learning_rate": rate,
+                "arch": arch,
+                "classifier": model.fc,
+                "optimizer_state": optimizer.state_dict(),
+                "class_to_idx": model.class_to_idx,
+                "state_dict": model.state_dict(),
+            }
+        elif arch == "vgg":
+            # the checkpoint
+            checkpoint = {
+                "epochs": epochs,
+                "learning_rate": rate,
+                "arch": arch,
+                "classifier": model.classifier,
+                "optimizer_state": optimizer.state_dict(),
+                "class_to_idx": model.class_to_idx,
+                "state_dict": model.state_dict(),
+            }
 
-    name = f"checkpoint_{arch}"
+        name = f"checkpoint_{arch}"
+        torch.save(checkpoint, dirpath + "/" + name + ".pth")
 
-    torch.save(checkpoint, dirpath + "/" + name + ".pth")
+    except FileNotFoundError as e:
+        print(f"Error saving checkpoint {e}")

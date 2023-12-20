@@ -9,76 +9,9 @@ the training is done on a GPU using google colab and GPU compute units provided 
 the model is trained using the resnet50 model over 10 optimization loops (epochs) and the accuracy is 71% on the test set.
 the model is also trained using the vgg16 model over 10 optimization loops (epochs) and the accuracy is 78% on the test set.
 
-* The notebooks are these ones:
+* The notebooks are these:
   * [Image Classifier Project (resnet50).ipynb](Image%20Classifier%20Project%20(resnet50).ipynb)
   * [Image Classifier Project (vgg16).ipynb](Image%20Classifier%20Project%20(vgg16).ipynb)
-
-## how run the command line application
-
-first clone the repository using the following command:
-
-```bash
-git clone https://github.com/michaelgobz/imageclassifier.git
-```
-
-then cd into the directory:
-
-```bash
-cd imageclassifier
-```
-
-then ger the data and create a checkpoints folder using for example the following command:
-you change the folder names if you want to but remember to pass them to the train.py and predict.py files.
-
-```bash
-wget https://s3.amazonaws.com/content.udacity-data.com/nd089/flower_data.tar.gz
-mkdir ./checkpoints
-mkdir ./flowers
-```
-
-then extract the data using the following command:
-
-```bash
-tar -xvzf flower_data.tar.gz -C ./flowers
-```
-
-then create a virtual environment using the following conda command:
-
-```bash
-conda create -n imageclassifier python=3.11.0
-```
-
-then activate the virtual environment using the following command:
-
-```bash
-conda activate imageclassifier
-```
-
-then run the train.py file using for example the following command:
-
-```bash
-python train.py ./flowers --gpu --epochs=10 --arch=resnet50 --learning_rate=0.001  --save_dir=./checkpoints
-```
-
-then run the predict.py file using for example the following command:
-
-```bash
-python predict.py flowers/test/1/image_06743.jpg ./checkpoints --arch=resnet50  --top_k=5 --categories_path=./cat_to_name.json --gpu
-```
-
-alternatively you can run the bash scripts using the following commands:
-run the train.sh file first to check for train the model using the following command:
-
-```bash
-bash train.sh
-
-```
-
-then run the predict.sh file using the following command:
-
-```bash
-bash predict.sh
-```
 
 ## Part 2 - Building the command line application
 
@@ -94,11 +27,11 @@ The project submission must include at least two files train.py and predict.py. 
 * Prints out training loss, validation loss, and validation accuracy as the network trains
 * Options:
   * Set directory to save checkpoints: python train.py data_dir --save_dir save_directory
-  * Choose architecture: python train.py data_dir --arch "vgg13"
+  * Choose architecture: python train.py data_dir --arch "vgg16"
   * Set hyper-parameters: python train.py data_dir --learning_rate 0.01 --epochs 20
   * Use GPU for training: python train.py data_dir --gpu
   * The  --force flag trains the network even if a checkpoint is already saved in the save_directory.
-  * Example: python train.py flowers --arch "vgg13" --learning_rate 0.01  --epochs 20 --gpu
+  * Example: python train.py flowers --arch "vgg16" --learning_rate 0.01  --epochs 20 --gpu
   * The training loss, validation loss, and validation accuracy are printed out as a network trains and after training a checkpoint is saved in the save_directory.
 
 #### Predict flower name from an image with predict.py along with the probability of that name. 
@@ -110,16 +43,16 @@ That is, you'll pass in a single image /path/to/image and return the flower name
   * Return top K most likely classes: python predict.py input checkpoint --top_k 3
   * Use a mapping of categories to real names: python predict.py input checkpoint --category_names cat_to_name.json
   * Use GPU for inference: python predict.py input checkpoint --gpu
-  * Example: python predict.py flowers/test/1/image_06743.jpg checkpoint --top_k 5 --category_names cat_to_name.json --gpu
+  * Example: python predict.py ./flowers/test/1/image_06743.jpg ./checkpoints --top_k 5 --category_names cat_to_name.json --gpu
   * The top K classes along with associated probabilities are printed out after predicting.
 
 #### Notes
 
 * The model is trained on a GPU if available. which can be specified by adding the --gpu flag when running the program from the command line.
 * The training loss, validation loss, and validation accuracy are printed out as a network trains and after training a checkpoint is saved in the save_directory.
-* The training script allows users to choose from at least two different architectures available from torchvision.models.
-  * the default model is resent , but other models can be selected by using the --arch flag. the user can choose from resnet, vgg.
-  * The hyper-parameters for learning rate, number of hidden units, and training epochs are set by the user.
+* The model architectures supported are resnet50 and vgg16. the user can choose between them by using the --arch flag.
+  * the default model is resent50 , but other models can be selected by using the --arch flag. the user can choose from resnet, vgg.
+  * The hyperparameters for learning rate, number of hidden units, and training epochs are set by the user.
   * The user can choose to train the model on a GPU by specifying the --gpu flag in the call to train.py. which is highly recommended.since its a deep neural network.
 
 ## Part 3 - Testing the command line application
@@ -198,17 +131,70 @@ the correct class is: spear thistle
 
 the  results are produced using resnet50 model
 
-## Bash scripts
+## Here is how to run the command line application
 
-Included are the bash scripts I used to run the program on the GPU and CPU. the bash scripts are as follows:
+first clone the repository using the following command:
 
-* train.sh
-* predict.sh
+```bash
+git clone https://github.com/michaelgobz/imageclassifier.git
+```
 
-they are used as follows:
+then cd into the directory:
+
+```bash
+cd imageclassifier
+```
+
+then ger the data and create a checkpoints folder using for example the following command:
+you change the folder names if you want to but remember to pass them to the train.py and predict.py files.
+
+```bash
+wget https://s3.amazonaws.com/content.udacity-data.com/nd089/flower_data.tar.gz
+mkdir ./checkpoints
+mkdir ./flowers
+```
+
+then extract the data using the following command:
+
+```bash
+tar -xvzf flower_data.tar.gz -C ./flowers
+```
+
+then create a virtual environment using the following conda command:
+
+```bash
+conda create -n imageclassifier python=3.11.0
+```
+
+then activate the virtual environment using the following command:
+
+```bash
+conda activate imageclassifier
+```
+
+then run the train.py file using for example the following command:
+
+```bash
+python train.py ./flowers --gpu --epochs=10 --arch=resnet50 --learning_rate=0.001  --save_dir=./checkpoints
+```
+
+then run the predict.py file using for example the following command:
+
+```bash
+python predict.py ./flowers/test/1/image_06743.jpg ./checkpoints --arch=resnet50  --top_k=5 --categories_path=./cat_to_name.json --gpu
+```
+
+alternatively you can run the bash scripts using the following commands:
+run the train.sh file first to check for train the model using the following command:
 
 ```bash
 bash train.sh
+
+```
+
+then run the predict.sh file using the following command:
+
+```bash
 bash predict.sh
 ```
 

@@ -38,15 +38,26 @@ def main():
     model = load_checkpoint(args.checkpoints_dir, model_pre, args.arch)
 
     # predict the image category
+    try:
+        probs, classes, flowers = predict(
+            image, model, args.top_k, cat_to_name, args.gpu
+        )
 
-    probs, classes, flowers = predict(image, model, args.top_k, cat_to_name, args.gpu)
+        # print the class of the image with the highest probability.
 
-    # print the class of the image with the highest probability.
+        print(
+            f"The image is predicted to be {flowers[0]} of id"
+            f"{classes[0]} with a probability of {probs[0]}"
+        )
 
-    print(
-        f"The image is predicted to be {flowers[0]} of id"
-        f"{classes[0]} with a probability of {probs[0]}"
-    )
+    except (
+        AttributeError,
+        AssertionError,
+        RuntimeError,
+        ResourceWarning,
+        UnboundLocalError,
+    ) as e:
+        print(f"Error predicting the image {str(e)}")
 
 
 if __name__ == "__main__":
