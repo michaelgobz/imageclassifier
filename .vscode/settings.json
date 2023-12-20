@@ -4,15 +4,19 @@
         "barbeton",
         "bromelia",
         "cautleya",
+        "colab",
         "commandline",
         "gaura",
         "gazania",
         "hippeastrum",
+        "imageclassifier",
         "IMAGENET",
         "Imshow",
+        "ipynb",
         "llandaff",
         "logps",
         "masterwort",
+        "Nanodegree",
         "ndarray",
         "optim",
         "osteospermum",
@@ -28,6 +32,7 @@
         "udacity",
         "unsqueeze",
         "validationlosses",
-        "validloader"
+        "validloader",
+        "xvzf"
     ]
 }

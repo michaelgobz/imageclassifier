@@ -5,20 +5,84 @@ Project code for Udacity's AI Programming with Python Nanodegree program. In thi
 ## Part 1 - Developing an Image Classifier with Deep Learning
 
 In this first part of the project, I work through a Jupyter notebook to implement an image classifier with PyTorch. I built and trained a deep neural network on the flower data set, which is a dataset of 102 flower categories.
-the training is done on a GPU using colab and GPU compute units provided by Udacity for training the model.
+the training is done on a GPU using google colab and GPU compute units provided by Udacity for training the model.
 the model is trained using the resnet50 model over 10 optimization loops (epochs) and the accuracy is 71% on the test set.
 the model is also trained using the vgg16 model over 10 optimization loops (epochs) and the accuracy is 78% on the test set.
 
- * The notebooks are these ones:
-    * [Image Classifier Project (resnet50).ipynb](Image%20Classifier%20Project%20(resnet50).ipynb)
-    * [Image Classifier Project (vgg16).ipynb](Image%20Classifier%20Project%20(vgg16).ipynb)
+* The notebooks are these ones:
+  * [Image Classifier Project (resnet50).ipynb](Image%20Classifier%20Project%20(resnet50).ipynb)
+  * [Image Classifier Project (vgg16).ipynb](Image%20Classifier%20Project%20(vgg16).ipynb)
 
+## how run the command line application
 
+first clone the repository using the following command:
+
+```bash
+git clone https://github.com/michaelgobz/imageclassifier.git
+```
+
+then cd into the directory:
+
+```bash
+cd imageclassifier
+```
+
+then ger the data and create a checkpoints folder using for example the following command:
+you change the folder names if you want to but remember to pass them to the train.py and predict.py files.
+
+```bash
+wget https://s3.amazonaws.com/content.udacity-data.com/nd089/flower_data.tar.gz
+mkdir ./checkpoints
+mkdir ./flowers
+```
+
+then extract the data using the following command:
+
+```bash
+tar -xvzf flower_data.tar.gz -C ./flowers
+```
+
+then create a virtual environment using the following conda command:
+
+```bash
+conda create -n imageclassifier python=3.11.0
+```
+
+then activate the virtual environment using the following command:
+
+```bash
+conda activate imageclassifier
+```
+
+then run the train.py file using for example the following command:
+
+```bash
+python train.py ./flowers --gpu --epochs=10 --arch=resnet50 --learning_rate=0.001  --save_dir=./checkpoints
+```
+
+then run the predict.py file using for example the following command:
+
+```bash
+python predict.py flowers/test/1/image_06743.jpg ./checkpoints --arch=resnet50  --top_k=5 --categories_path=./cat_to_name.json --gpu
+```
+
+alternatively you can run the bash scripts using the following commands:
+run the train.sh file first to check for train the model using the following command:
+
+```bash
+bash train.sh
+
+```
+
+then run the predict.sh file using the following command:
+
+```bash
+bash predict.sh
+```
 
 ## Part 2 - Building the command line application
 
 After building and training a deep neural network on the flower data set, I converted it into an application that others can use. The application is a pair of Python scripts that run from the command line. For testing, I used the checkpoint I saved in the first part.
-
 
 ### Specifications
 
@@ -31,13 +95,14 @@ The project submission must include at least two files train.py and predict.py. 
 * Options:
   * Set directory to save checkpoints: python train.py data_dir --save_dir save_directory
   * Choose architecture: python train.py data_dir --arch "vgg13"
-  * Set hyperparameters: python train.py data_dir --learning_rate 0.01 --epochs 20
+  * Set hyper-parameters: python train.py data_dir --learning_rate 0.01 --epochs 20
   * Use GPU for training: python train.py data_dir --gpu
+  * The  --force flag trains the network even if a checkpoint is already saved in the save_directory.
   * Example: python train.py flowers --arch "vgg13" --learning_rate 0.01  --epochs 20 --gpu
   * The training loss, validation loss, and validation accuracy are printed out as a network trains and after training a checkpoint is saved in the save_directory.
 
-
 #### Predict flower name from an image with predict.py along with the probability of that name. 
+
 That is, you'll pass in a single image /path/to/image and return the flower name and class probability.
 
 * Basic usage: python predict.py /path/to/image checkpoint
@@ -49,13 +114,13 @@ That is, you'll pass in a single image /path/to/image and return the flower name
   * The top K classes along with associated probabilities are printed out after predicting.
 
 #### Notes
+
 * The model is trained on a GPU if available. which can be specified by adding the --gpu flag when running the program from the command line.
 * The training loss, validation loss, and validation accuracy are printed out as a network trains and after training a checkpoint is saved in the save_directory.
 * The training script allows users to choose from at least two different architectures available from torchvision.models.
-   * the default model is resent , but other models can be selected by using the --arch flag. the user can choose from resnet, vgg.
-   * The hyperparameters for learning rate, number of hidden units, and training epochs are set by the user.
-   * The user can choose to train the model on a GPU by specifying the --gpu flag in the call to train.py. which is highly recommended.since its a deep neural network.
-
+  * the default model is resent , but other models can be selected by using the --arch flag. the user can choose from resnet, vgg.
+  * The hyper-parameters for learning rate, number of hidden units, and training epochs are set by the user.
+  * The user can choose to train the model on a GPU by specifying the --gpu flag in the call to train.py. which is highly recommended.since its a deep neural network.
 
 ## Part 3 - Testing the command line application
 
@@ -73,7 +138,7 @@ likely classes along with the probabilities on the following flower images:
 
 The results were as follows:
 
-```
+```md
 image_06743.jpg
 
 Top 5 classes: ['pink primrose', 'tree mallow', 'hibiscus', 'balloon flower', 'mexican petunia']
@@ -128,13 +193,16 @@ image_06052.jpg
 ['14', '17', '29', '10', '67']
 ['spear thistle', 'purple coneflower', 'artichoke', 'globe thistle', 'spring crocus']
 the correct class is: spear thistle
-``` 
+
+```
+
 the  results are produced using resnet50 model
 
-#### Bash scripts
+## Bash scripts
+
 Included are the bash scripts I used to run the program on the GPU and CPU. the bash scripts are as follows:
 
-* train.sh 
+* train.sh
 * predict.sh
 
 they are used as follows:
@@ -145,6 +213,7 @@ bash predict.sh
 ```
 
 ## License
+
 [MIT](https://choosealicense.com/licenses/mit/)
 
 ## conclusion
@@ -153,6 +222,6 @@ Thanks to Udacity for training provided in pytorch and the advanced mathematics.
 I hope to use this knowledge in the future to build more advanced deep learning models.
 Thanks to udacity and colab for providing the GPU for training the model.
 
-
 ## Author
+
 [Michael Goboola](https://github.com/michaelgobz/)

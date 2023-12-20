@@ -36,7 +36,6 @@ def main():
 
     """
     # checkpoint path pattern
-    pattern = r".*\.pth"
     flag = False
 
     start_time = time()
