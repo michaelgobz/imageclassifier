@@ -5,13 +5,13 @@
     date: 2023-19-12
 """
 import torch
-from torch import optim
 
 
 def load_checkpoint(file_dir, model_pretrained, arch, device="cpu"):
     """loads the saved checkpoint from a file path
 
     Args:
+        device:  (_str_): device to run the model on
         file_dir (_str_): directory path to the checkpoints
         model_pretrained (_torch.Module_): pytorch pretrained model
         arch (_str_): architecture  of the model
@@ -24,21 +24,13 @@ def load_checkpoint(file_dir, model_pretrained, arch, device="cpu"):
         model = None
         
         if arch == "resnet50":
-            optimizer = optim.Adam(
-                model_pretrained.fc.parameters(), lr=checkpoint["learning_rate"]
-            )
             model_pretrained.fc = checkpoint["classifier"]
-            # loading the optimizer state throws a bug so we will not load it
-            # optimizer.load_state_dict(checkpoint["optimizer_state"])
             model_pretrained.load_state_dict(checkpoint["state_dict"])
             model_pretrained.fc.class_to_idx = checkpoint["class_to_idx"]
             model = model_pretrained
+
         elif arch == "vgg16":
-            optimizer = optim.Adam(
-                model_pretrained.classifier.parameters(), lr=checkpoint["learning_rate"]
-            )
             model_pretrained.classifier = checkpoint["classifier"]
-            optimizer.load_state_dict(checkpoint["optimizer_state"])
             model_pretrained.load_state_dict(checkpoint["state_dict"])
             model_pretrained.class_to_idx = checkpoint["class_to_idx"]
             model = model_pretrained
