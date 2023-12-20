@@ -61,7 +61,7 @@ def save_checkpoint(dirpath, model, optimizer, rate, epochs, train_data, arch):
         model.class_to_idx = train_data.class_to_idx
         checkpoint = None
 
-        if arch == "resnet":
+        if arch == "resnet50":
             # the checkpoint
             checkpoint = {
                 "epochs": epochs,
@@ -72,7 +72,7 @@ def save_checkpoint(dirpath, model, optimizer, rate, epochs, train_data, arch):
                 "class_to_idx": model.class_to_idx,
                 "state_dict": model.state_dict(),
             }
-        elif arch == "vgg":
+        elif arch == "vgg16":
             # the checkpoint
             checkpoint = {
                 "epochs": epochs,
