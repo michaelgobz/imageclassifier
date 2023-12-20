@@ -4,6 +4,6 @@
 
 echo "Predicting has started"
 
-python predict.py ./flowers/test/1/image_06743.jpg --arch=vgg --checkpoints_dir=./checkpoints --top_k=5 --categories_path=./cat_to_name.json --gpu
+python predict.py ./flowers/test/1/image_06743.jpg --arch=resent50 --checkpoints_dir=./checkpoints --top_k=5 --categories_path=./cat_to_name.json --gpu
 
 echo "Predicting has finished"
