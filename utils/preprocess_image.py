@@ -21,7 +21,7 @@ def process_image(image_path):
     5. transpose the image to the correct format
     6. convert the image to a float tensor
     Args:
-        image: path to the image
+        image_path: path to the image
 
     Returns: the image as a  float tensor
 
