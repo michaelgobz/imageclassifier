@@ -185,8 +185,9 @@ then run the predict.py file using for example the following command:
 python predict.py ./flowers/test/1/image_06743.jpg ./checkpoints --arch=resnet50  --top_k=5 --categories_path=./cat_to_name.json --gpu
 ```
 
-alternatively you can run the bash scripts using the following commands:
-run the train.sh file first to check for train the model using the following command:
+Alternatively you can run the bash scripts using the following commands:
+these scripts set up the training and prediction environment and run the train.py and predict.py files and runs the scripts with options set.
+they are designed specific to the project and the data set used. They are run as follows:
 
 ```bash
 bash train.sh
