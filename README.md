@@ -30,6 +30,7 @@ The project submission must include at least two files train.py and predict.py. 
   * Choose architecture: python train.py data_dir --arch "vgg16"
   * Set hyper-parameters: python train.py data_dir --learning_rate 0.01 --epochs 20
   * Use GPU for training: python train.py data_dir --gpu
+  * set the number of hidden units for the output layer: python train.py data_dir --hidden_units default=102 because of project specifics but can be any depending on your specific classification problem.
   * The  --force flag trains the network even if a checkpoint is already saved in the save_directory.
   * Example: python train.py flowers --arch "vgg16" --learning_rate 0.01  --epochs 20 --gpu
   * The training loss, validation loss, and validation accuracy are printed out as a network trains and after training a checkpoint is saved in the save_directory.

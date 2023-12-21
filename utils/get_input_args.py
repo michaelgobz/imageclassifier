@@ -61,6 +61,11 @@ def get_train_input_args():
         default=0.003,
         help="The model leaning rate, small float percentage",
     )
+
+    parser.add_argument("--hidden_units",
+                        type=int, default=102,
+                        help="The number of hidden units for the output fully connected layer")
+
     parser.add_argument(
         "--gpu", help="Tell the model to run on he GPU",
         action="store_true"

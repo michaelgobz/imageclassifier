@@ -62,25 +62,28 @@ def get_pretrained_model(arch: str, pretrained: bool = True):
     return pretrained_model
 
 
-def create_the_classifier(model, arch):
+def create_the_classifier(model, arch, hidden_units:int):
     """This creates the classifier on top of the pretrained model so thats we use transfer learning
     to train the model on our data  with is a multi-class classification
     Returns:
         _torch.Module_: the model with the classifier bit changed to have out features of 102 and inputs depending on
         the model architecture
     """
+    if hidden_units is None:
+        print("hidden units needs to be provided then re-run the training")
+        exit(1)
 
-    if arch == "resnet50":
+    if arch == "resnet50" and hidden_units is not None:
         model.fc = nn.Sequential(
             nn.Linear(2048, 1024),
             nn.ReLU(),
             nn.Linear(1024, 256),
             nn.ReLU(),
             nn.Dropout(p=0.2),
-            nn.Linear(256, 102),
+            nn.Linear(256, hidden_units),
             nn.LogSoftmax(dim=1),
         )
-    elif arch == "vgg16":
+    elif arch == "vgg16" and hidden_units is not None:
         model.classifier = nn.Sequential(
             nn.Linear(25088, 1024),
             nn.ReLU(),
@@ -88,7 +91,7 @@ def create_the_classifier(model, arch):
             nn.Linear(1024, 256),
             nn.ReLU(),
             nn.Dropout(p=0.2),
-            nn.Linear(256, 102),
+            nn.Linear(256, hidden_units),
             nn.LogSoftmax(dim=1),
         )
 
@@ -141,15 +144,15 @@ def get_device(gpu=False):
 
 
 def train(
-    model,
-    epochs,
-    trainloader,
-    validloader,
-    criterion,
-    optimizer,
-    device,
-    steps_for_eval=0,
-    print_every=10,
+        model,
+        epochs,
+        trainloader,
+        validloader,
+        criterion,
+        optimizer,
+        device,
+        steps_for_eval=0,
+        print_every=10,
 ):
     """The function to train the model that trains the model over the optimisation loop and prints the training
     and validation loss and accuracy.

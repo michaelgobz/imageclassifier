@@ -56,7 +56,7 @@ def main():
     pre_trained_model = get_pretrained_model(optional_args.arch, pretrained=True)
 
     # define the classifier
-    model = create_the_classifier(pre_trained_model, optional_args.arch)
+    model = create_the_classifier(pre_trained_model, optional_args.arch, optional_args.hidden_units)
 
     # define the loss function (criterion)
 
