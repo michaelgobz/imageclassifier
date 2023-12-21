@@ -54,10 +54,16 @@ def main():
             f"{classes[0]} with a probability of {probs[0]}"
         )
 
+        # print the top k classes of the image with the highest probability.
+        print("The top k classes and their flower names are:\n")
+        for i in range(args.top_k):
+            print(f"{flowers[i]} of id {classes[i]} with a probability of {probs[i]}")
+            print("========================================================================")
+
     except (
-        AssertionError,
-        ResourceWarning,
-        UnboundLocalError,
+            AssertionError,
+            ResourceWarning,
+            UnboundLocalError,
     ) as e:
         print(f"Error predicting the image {str(e)}")
 
