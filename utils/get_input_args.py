@@ -19,6 +19,7 @@ def get_train_input_args():
     4. save_dir - the directory to save the model to
     5. epochs - the number of times to train the model
     6. gpu - the option to use the GPU
+    7. hidden_units - the number of hidden units for the output fully connected layer
 
 
     Returns:
